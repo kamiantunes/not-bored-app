@@ -39,6 +39,8 @@ class HomeViewController: UIViewController {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.keyboardType = .numberPad
         tf.borderStyle = .roundedRect
+        tf.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+        tf.delegate = self
 
         return tf
     }()
@@ -77,7 +79,11 @@ class HomeViewController: UIViewController {
     }
 
     @objc func didTapStart() {
-        let vc = TermsViewController()
+        guard let participants = participantsTextField.text else { return }
+
+        print(Int(participants) ?? 0)
+
+        let vc = ListCategoriesViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 
@@ -121,5 +127,20 @@ class HomeViewController: UIViewController {
             termsButton.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
             termsButton.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor)
         ])
+    }
+}
+
+extension HomeViewController: UITextFieldDelegate {
+    @objc func textFieldDidChange(_ textField: UITextField) {
+
+        guard let textParticipants = participantsTextField.text else { return }
+
+        startButton.isEnabled = Int(textParticipants) ?? 0 > 0
+
+        if startButton.isEnabled {
+            startButton.backgroundColor = .systemBlue
+        } else {
+            startButton.backgroundColor = .gray
+        }
     }
 }
