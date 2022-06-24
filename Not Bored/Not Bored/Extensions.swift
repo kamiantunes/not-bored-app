@@ -45,3 +45,26 @@ extension UIColor {
 
     static let backgroundHome = UIColor.init(hex: 0xD4F4FF)
 }
+
+extension String {
+    static let urlRandomActivity = "http://www.boredapi.com/api/activity"
+    static let urlRandomParticipantsActivity = "http://www.boredapi.com/api/activity?participants="
+    static let urlRandomPriceActivity = "http://www.boredapi.com/api/activity?price="
+    static let urlCategorieActivity = "http://www.boredapi.com/api/activity?type="
+    static let parameterParticipants = "&participants="
+    static let parameterPrice = "&price="
+}
+
+
+func pin(_ view: UIView, to navigation: UIViewController) {
+    view.translatesAutoresizingMaskIntoConstraints = false
+
+    navigation.view.addSubview(view)
+
+    NSLayoutConstraint.activate([
+        view.topAnchor.constraint(equalTo: navigation.view.topAnchor),
+        view.leadingAnchor.constraint(equalTo: navigation.view.leadingAnchor),
+        view.centerYAnchor.constraint(equalTo: navigation.view.centerYAnchor),
+        view.trailingAnchor.constraint(equalTo: navigation.view.trailingAnchor)
+    ])
+}
