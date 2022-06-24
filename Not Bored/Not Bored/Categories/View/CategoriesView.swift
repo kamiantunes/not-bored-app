@@ -9,19 +9,21 @@ import UIKit
 
 final class CategoriesView: UIView {
 
-    lazy var tableview: UITableView = {
-        let tv = UITableView()
-
-        tv.backgroundColor = .backgroundHome
-        tv.translatesAutoresizingMaskIntoConstraints = false
-
-        return tv
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        tableView.backgroundColor = .backgroundHome
+        
+        return tableView
     }()
 
     private lazy var titleView: UIView = {
         let view = UIView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
+        
         view.backgroundColor = .systemBlue
 
         return view
@@ -31,6 +33,7 @@ final class CategoriesView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.text = "Activities"
         label.textAlignment = .center
@@ -55,43 +58,60 @@ final class CategoriesView: UIView {
 
         backgroundColor = .backgroundHome
 
-        setupViews()
-        setUpConstraints()
+        setUpViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViews() {
+    private func setUpViews() {
+        addSubview(titleView)
+        setUpConstraintsTitleView()
+        
+        addSubview(tableView)
+        setUpConstraintsTableView()
+        
         titleView.addSubview(shuffleButton)
+        setUpConstraintsShuffleButton()
+        
         titleView.addSubview(titleLabel)
-
-        self.addSubview(titleView)
-        self.addSubview(tableview)
+        setUpConstraintsTitleLabel()
+        
     }
-
-    private func setUpConstraints() {
+    
+    private func setUpConstraintsTitleView() {
         NSLayoutConstraint.activate([
             titleView.topAnchor.constraint(equalTo: self.topAnchor),
             titleView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             titleView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            titleView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 80),
-
-            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor),
-
+            titleView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 80)
+        ])
+    }
+    
+    private func setUpConstraintsTableView() {
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: titleView.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsShuffleButton() {
+        NSLayoutConstraint.activate([
             shuffleButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             shuffleButton.widthAnchor.constraint(equalToConstant: 26),
             shuffleButton.heightAnchor.constraint(equalToConstant: 26),
-            shuffleButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-
-            tableview.topAnchor.constraint(equalTo: titleView.bottomAnchor),
-            tableview.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            tableview.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            tableview.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            shuffleButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
-
+    }
+    
+    private func setUpConstraintsTitleLabel() {
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
+        ])
     }
 }

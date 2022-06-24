@@ -24,23 +24,22 @@ final class CategoriesTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var categorieIcon: UIImageView = {
-        let icon = UIImageView()
+    private lazy var categorieImageView: UIImageView = {
+        let imageView = UIImageView()
 
-        icon.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        icon.image = UIImage(systemName: "greaterthan")
-        icon.tintColor = .black
+        imageView.image = UIImage(systemName: "greaterthan")
+        imageView.tintColor = .black
 
-        return icon
+        return imageView
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         backgroundColor = .backgroundHome
-        setupView()
-        setupConstraints()
+        setUpViews()
     }
 
     required init?(coder: NSCoder) {
@@ -51,21 +50,30 @@ final class CategoriesTableViewCell: UITableViewCell {
         categorieLabel.text = categorie
     }
 
-    private func setupView() {
+    private func setUpViews() {
         addSubview(categorieLabel)
-        addSubview(categorieIcon)
+        setUpConstraintsCategorieLabel()
+        
+        addSubview(categorieImageView)
+        setUpConstraintsCategorieImageView()
+        
+        
     }
-
-    private func setupConstraints() {
+    
+    private func setUpConstraintsCategorieLabel() {
         NSLayoutConstraint.activate([
             categorieLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             categorieLabel.topAnchor.constraint(equalTo: topAnchor, constant: 24),
             categorieLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            categorieLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -100),
-
-            categorieIcon.centerYAnchor.constraint(equalTo: centerYAnchor),
-            categorieIcon.heightAnchor.constraint(equalToConstant: 24),
-            categorieIcon.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
+            categorieLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -100)
+        ])
+    }
+    
+    private func setUpConstraintsCategorieImageView() {
+        NSLayoutConstraint.activate([
+            categorieImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            categorieImageView.heightAnchor.constraint(equalToConstant: 24),
+            categorieImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
     }
 }

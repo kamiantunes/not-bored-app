@@ -13,6 +13,7 @@ final class TermsView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.text = "Terms and Conditions"
         label.sizeToFit()
         label.numberOfLines = 0
@@ -27,6 +28,7 @@ final class TermsView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.text = "Not Bored"
         label.sizeToFit()
         label.numberOfLines = 0
@@ -43,6 +45,7 @@ final class TermsView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.text = textViewText
         label.sizeToFit()
         label.numberOfLines = 0
@@ -54,11 +57,11 @@ final class TermsView: UIView {
     }()
 
     private lazy var scrollView: UIScrollView = {
-        let scroll = UIScrollView()
+        let scrollView = UIScrollView()
 
-        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
 
-        return scroll
+        return scrollView
     }()
 
     private lazy var contentView: UIView = {
@@ -74,43 +77,67 @@ final class TermsView: UIView {
 
         backgroundColor = .backgroundHome
 
-        addSubviews()
-        setUpConstraints()
+        setUpSubViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func addSubviews() {
-        self.addSubview(scrollView)
+    private func setUpSubViews() {
+        addSubview(scrollView)
+        setUpConstraintScrollView()
+        
         scrollView.addSubview(contentView)
+        setUpConstraintContentView()
+        
         contentView.addSubview(titleLabel)
+        setUpConstraintTitleLabel()
+        
         contentView.addSubview(notBoredLabel)
+        setUpConstraintNotBoredLabel()
+        
         contentView.addSubview(textLabel)
+        setUpConstraintTextLabel()
     }
-
-    private func setUpConstraints() {
+    
+    private func setUpConstraintScrollView() {
         NSLayoutConstraint.activate([
             scrollView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             scrollView.widthAnchor.constraint(equalTo: self.widthAnchor),
             scrollView.topAnchor.constraint(equalTo: self.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-
+            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
+    
+    private func setUpConstraintContentView() {
+        NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+    }
+    
+    private func setUpConstraintTitleLabel() {
+        NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    private func setUpConstraintNotBoredLabel() {
+        NSLayoutConstraint.activate([
             notBoredLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             notBoredLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 25),
             notBoredLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-
+        ])
+    }
+    
+    private func setUpConstraintTextLabel() {
+        NSLayoutConstraint.activate([
             textLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             textLabel.topAnchor.constraint(equalTo: notBoredLabel.bottomAnchor, constant: 25),
             textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),

@@ -14,4 +14,11 @@ struct Home {
             hasParticipants = true
         }
     }
+    
+    var hasPrice: Bool = false
+    var price: Double = -1 {
+        didSet {
+            hasPrice = true
+        }
+    }
 }

@@ -13,6 +13,7 @@ final class HomeView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.text = "Not Bored"
         label.font = UIFont.systemFont(ofSize: 36, weight: .bold)
         label.textColor = .systemBlue
@@ -25,6 +26,7 @@ final class HomeView: UIView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
+        
         label.text = "Participants:"
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
         label.textColor = .black
@@ -34,19 +36,47 @@ final class HomeView: UIView {
     }()
 
     lazy var participantsTextField: UITextField = {
-        let tf = UITextField()
+        let textField = UITextField()
 
-        tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.keyboardType = .numberPad
-        tf.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.placeholder = "Ex: 3"
+        textField.keyboardType = .numberPad
+        textField.borderStyle = .roundedRect
 
-        return tf
+        return textField
+    }()
+    
+    private lazy var priceLabel: UILabel = {
+        let label = UILabel()
+
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        label.text = "Price:"
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .black
+        label.textAlignment = .left
+
+        return label
+    }()
+    
+    lazy var priceTextField: UITextField = {
+        let textField = UITextField()
+
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        textField.placeholder = "Ex: 0.5 (Max: 1)"
+        textField.keyboardType = .numbersAndPunctuation
+        textField.borderStyle = .roundedRect
+
+        return textField
     }()
 
     lazy var startButton: UIButton = {
         let button = UIButton()
 
         button.translatesAutoresizingMaskIntoConstraints = false
+        
         button.setTitle("Start", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
@@ -59,6 +89,7 @@ final class HomeView: UIView {
         let button = UIButton()
 
         button.translatesAutoresizingMaskIntoConstraints = false
+        
         button.setTitle("Terms and Conditions", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.underline()
@@ -72,7 +103,6 @@ final class HomeView: UIView {
         backgroundColor = .backgroundHome
 
         setUpSubViews()
-        setUpConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -81,35 +111,77 @@ final class HomeView: UIView {
 
     private func setUpSubViews() {
         self.addSubview(notBoredLabel)
+        setUpConstraintsNotBoredLabel()
+        
         self.addSubview(participantsLabel)
+        setUpConstraintsParticipantsLabel()
+        
         self.addSubview(participantsTextField)
+        setUpConstraintsParticipantsTextField()
+        
+        self.addSubview(priceLabel)
+        setUpConstraintsPriceLabel()
+        
+        self.addSubview(priceTextField)
+        setUpConstraintsPriceTextField()
+        
         self.addSubview(startButton)
+        setUpConstraintsStartButton()
+        
         self.addSubview(termsButton)
+        setUpConstraintsTermsButton()
     }
-
-    private func setUpConstraints() {
+    
+    private func setUpConstraintsNotBoredLabel() {
         NSLayoutConstraint.activate([
-            // notBoredLabel
-            notBoredLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 76),
+            notBoredLabel.topAnchor.constraint(lessThanOrEqualTo: self.safeAreaLayoutGuide.topAnchor, constant: 50),
             notBoredLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            notBoredLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-
-            // participantsLabel
+            notBoredLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsParticipantsLabel() {
+        NSLayoutConstraint.activate([
             participantsLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             participantsLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            participantsLabel.bottomAnchor.constraint(equalTo: participantsTextField.topAnchor, constant: -8),
-
-            // participantsTextField
-            participantsTextField.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor),
+            participantsLabel.bottomAnchor.constraint(equalTo: participantsTextField.topAnchor, constant: -8)
+        ])
+    }
+    
+    private func setUpConstraintsParticipantsTextField() {
+        NSLayoutConstraint.activate([
+            participantsTextField.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor, constant: -50),
             participantsTextField.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
-            participantsTextField.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor),
-
-            // startButton
+            participantsTextField.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsPriceLabel() {
+        NSLayoutConstraint.activate([
+            priceLabel.topAnchor.constraint(equalTo: participantsTextField.bottomAnchor, constant: 16),
+            priceLabel.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsPriceTextField() {
+        NSLayoutConstraint.activate([
+            priceTextField.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 8),
+            priceTextField.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+            priceTextField.trailingAnchor.constraint(equalTo: priceLabel.trailingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsStartButton() {
+        NSLayoutConstraint.activate([
             startButton.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
             startButton.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor),
-            startButton.bottomAnchor.constraint(equalTo: termsButton.topAnchor, constant: -8),
-
-            // termsButton
+            startButton.bottomAnchor.constraint(equalTo: termsButton.topAnchor, constant: -8)
+        ])
+    }
+    
+    private func setUpConstraintsTermsButton() {
+        NSLayoutConstraint.activate([
             termsButton.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
             termsButton.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor),
             termsButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -64)

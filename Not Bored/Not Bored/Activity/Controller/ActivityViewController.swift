@@ -8,14 +8,13 @@
 import UIKit
 
 final class ActivityViewController: UIViewController {
+    
     lazy var activityView: ActivityView = {
         ActivityView(frame: .zero)
     }()
 
     private let network = Network()
-
     private var activityInformation: ActivityInformation?
-    private var activity: Activity?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +36,7 @@ final class ActivityViewController: UIViewController {
     }
 
     @objc private func didTapNextButton() {
-        verifyRandom()
+        requisition()
     }
 
     private func setupCategorie() {
@@ -51,17 +50,31 @@ final class ActivityViewController: UIViewController {
         guard let activityInformation = activityInformation else { return }
 
         if !activityInformation.isRandom {
-            activityView.categorieIcon.isHidden = true
+            activityView.categorieImageView.isHidden = true
             activityView.categorieLabel.isHidden = true
         }
     }
 
-    private func verifyRandom() {
+    private func requisition() {
         guard let activityInformation = activityInformation else { return }
 
-        network.getActivy(url: activityInformation.url) { resultado in
-            self.populateData(with: resultado)
+        network.getActivy(url: activityInformation.url) { resultado, error in
+            if let resultado = resultado {
+                self.populateData(with: resultado)
+            } else if error != nil {
+                self.makeAndPresentAlert()
+            }
         }
+    }
+    
+    private func makeAndPresentAlert() {
+        let message = "There are no activities with these parameters"
+        let title = "Activity not found!"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
     func populateData(with activity: Activity) {

@@ -47,10 +47,10 @@ extension UIColor {
 }
 
 extension String {
-    static let urlRandomActivity = "http://www.boredapi.com/api/activity"
-    static let urlRandomParticipantsActivity = "http://www.boredapi.com/api/activity?participants="
-    static let urlRandomPriceActivity = "http://www.boredapi.com/api/activity?price="
-    static let urlCategorieActivity = "http://www.boredapi.com/api/activity?type="
+    static let urlRandom = "http://www.boredapi.com/api/activity"
+    static let urlRandomParticipants = "http://www.boredapi.com/api/activity?participants="
+    static let urlRandomPrice = "http://www.boredapi.com/api/activity?price="
+    static let urlCategorie = "http://www.boredapi.com/api/activity?type="
     static let parameterParticipants = "&participants="
     static let parameterPrice = "&price="
 }

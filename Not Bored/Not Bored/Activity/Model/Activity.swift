@@ -31,5 +31,5 @@ struct ActivityInformation {
     var categorie: String?
     var homeInput: Home?
     var isRandom: Bool = false
-    var url: String = ""
+    var url: String = String()
 }

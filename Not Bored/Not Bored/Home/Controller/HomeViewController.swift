@@ -8,21 +8,18 @@
 import UIKit
 
 final class HomeViewController: UIViewController {
-
-    weak var delegate: CategoriesViewControllerDelegate?
-
+    
     private lazy var homeView: HomeView = {
         HomeView(frame: .zero)
     }()
+    
+    weak var delegate: CategoriesViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
-    }
-
-    private func configure() {
+        
         pin(homeView, to: self)
-
+        
         addActions()
     }
 
@@ -33,6 +30,10 @@ final class HomeViewController: UIViewController {
         // participantsTextField
         homeView.participantsTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
         homeView.participantsTextField.delegate = self
+        
+        // priceTextField
+        homeView.priceTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
+        homeView.priceTextField.delegate = self
 
         // startButton
         homeView.startButton.addTarget(self, action: #selector(didTapStart), for: .touchUpInside)
@@ -45,21 +46,25 @@ final class HomeViewController: UIViewController {
         view.endEditing(true)
     }
 
-    @objc func didTapStart() {
-        let vc = CategoriesViewController()
+    @objc private func didTapStart() {
+        let viewController = CategoriesViewController()
         var home = Home()
 
         if let participants = homeView.participantsTextField.text, !participants.isEmpty {
             home.numberOfParticipants = Int(participants) ?? 0
         }
+        
+        if let price = homeView.priceTextField.text, !price.isEmpty {
+            home.price = Double(price) ?? -1
+        }
 
-        self.delegate = vc
+        self.delegate = viewController
         delegate?.addHomeInput(home: home)
 
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
-    @objc func didTapTerms() {
+    @objc private func didTapTerms() {
         let vc = TermsViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -67,15 +72,22 @@ final class HomeViewController: UIViewController {
 
 extension HomeViewController: UITextFieldDelegate {
 
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let textParticipants = homeView.participantsTextField.text else { return }
+    @objc private func textFieldDidChange(_ textField: UITextField) {
+        guard let textParticipants = homeView.participantsTextField.text,
+              let textPrice = homeView.priceTextField.text else { return }
+        
+        let participants = Int(textParticipants) ?? 0
+        let participantsCondition = participants > 0 || textParticipants.isEmpty
+        
+        let price: Double = textPrice.isEmpty ? -1 : Double(textPrice) ?? 2
+        let priceCondition = price >= 0 && price <= 1 || price < 0
 
-        homeView.startButton.isEnabled = Int(textParticipants) ?? 0 > 0 || textParticipants.isEmpty
-
-        if homeView.startButton.isEnabled {
-            homeView.startButton.backgroundColor = .systemBlue
-        } else {
-            homeView.startButton.backgroundColor = .gray
-        }
+        verifyButton(priceCondition, participantsCondition)
+    }
+    
+    private func verifyButton(_ priceCondition: Bool, _ participantsCondition: Bool) {
+        homeView.startButton.isEnabled = priceCondition && participantsCondition
+        
+        homeView.startButton.backgroundColor = homeView.startButton.isEnabled ? .systemBlue : .gray
     }
 }

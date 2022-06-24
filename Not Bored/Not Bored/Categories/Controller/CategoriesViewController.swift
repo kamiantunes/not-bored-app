@@ -8,16 +8,15 @@
 import UIKit
 
 final class CategoriesViewController: UIViewController {
-
-    weak var delegate: ActivityViewControllerDelegate?
-
-    private let network = Network()
-
+    
     private lazy var categoriesView: CategoriesView = {
         CategoriesView(frame: .zero)
     }()
 
-    var homeInput: Home?
+    weak var delegate: ActivityViewControllerDelegate?
+    
+    private let network = Network()
+    private var homeInput: Home?
 
     private let categories: [String] = [
         "Education",
@@ -37,7 +36,7 @@ final class CategoriesViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
         pin(categoriesView, to: self)
 
-        setupTableView()
+        setUpTableView()
         addActions()
     }
 
@@ -47,51 +46,52 @@ final class CategoriesViewController: UIViewController {
 
     @objc private func didTapButton() {
         let categoryName = "Random"
-        let url = makeURLRandom()
-        let activityInformation = ActivityInformation(categorie: categoryName, homeInput: homeInput, isRandom: true, url: url)
-        let vc = ActivityViewController()
-
-
-        self.delegate = vc
+        let viewController = ActivityViewController()
+        
+        let url = network.makeURL(isRandom: true,
+                                  category: nil,
+                                  hasParticipants: homeInput?.hasParticipants ?? false ,
+                                  participants: homeInput?.numberOfParticipants ?? 0,
+                                  hasPrice: homeInput?.hasPrice ?? false,
+                                  price: homeInput?.price ?? 0)
+        
+        let activityInformation = ActivityInformation(categorie: categoryName,
+                                                      homeInput: homeInput,
+                                                      isRandom: true,
+                                                      url: url)
+    
+        self.delegate = viewController
         delegate?.addInformations(with: activityInformation)
 
-        network.getActivy(url: url) {resultado in
-            vc.populateData(with: resultado)
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        requisition(using: url, to: viewController)
+    }
+    
+    private func makeAndPresentAlert() {
+        let message = "There are no activities with these parameters"
+        let title = "Activity not found!"
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
     }
 
-    private func setupTableView() {
-        categoriesView.tableview.delegate = self
-        categoriesView.tableview.dataSource = self
+    private func setUpTableView() {
+        categoriesView.tableView.delegate = self
+        categoriesView.tableView.dataSource = self
 
-        categoriesView.tableview.register(CategoriesTableViewCell.self, forCellReuseIdentifier: CategoriesTableViewCell.reuseId)
+        categoriesView.tableView.register(CategoriesTableViewCell.self, forCellReuseIdentifier: CategoriesTableViewCell.reuseId)
     }
-
-    private func makeURLRandom() -> String {
-        guard let homeInput = homeInput else { return String() }
-
-        let url: String?
-
-        if homeInput.hasParticipants{
-            url = .urlRandomParticipantsActivity + "\(homeInput.numberOfParticipants)"
-        } else {
-            url = .urlRandomActivity
+    
+    private func requisition(using url: String, to viewController: ActivityViewController) {
+        network.getActivy(url: url) {response, error in
+            if let response = response {
+                viewController.populateData(with: response)
+                self.navigationController?.pushViewController(viewController, animated: true)
+            } else if error != nil {
+                self.makeAndPresentAlert()
+            }
         }
-
-        return url ?? ""
-    }
-
-    private func makeURLCategories(for category: String) -> String {
-        guard let homeInput = homeInput else { return String() }
-
-        var url = .urlCategorieActivity + category.lowercased()
-
-        if homeInput.hasParticipants {
-            url += .parameterParticipants + "\(homeInput.numberOfParticipants)"
-        }
-
-        return url
     }
 }
 
@@ -112,17 +112,24 @@ extension CategoriesViewController: UITableViewDelegate,  UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let category = categories[indexPath.row]
-        let url = makeURLCategories(for: category)
-        let activityInformation = ActivityInformation(categorie: category, homeInput: homeInput, isRandom: false, url: url)
-        let vc = ActivityViewController()
+        let viewController = ActivityViewController()
+        
+        let url = network.makeURL(isRandom: false,
+                                  category: category,
+                                  hasParticipants: homeInput?.hasParticipants ?? false ,
+                                  participants: homeInput?.numberOfParticipants ?? 0,
+                                  hasPrice: homeInput?.hasPrice ?? false,
+                                  price: homeInput?.price ?? 0)
+        
+        let activityInformation = ActivityInformation(categorie: category,
+                                                      homeInput: homeInput,
+                                                      isRandom: false,
+                                                      url: url)
 
-        self.delegate = vc
+        self.delegate = viewController
         delegate?.addInformations(with: activityInformation)
 
-        network.getActivy(url: url) {resultado in
-            vc.populateData(with: resultado)
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        requisition(using: url, to: viewController)
     }
 }
 

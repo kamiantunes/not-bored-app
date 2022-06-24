@@ -68,15 +68,15 @@ final class ActivityView: UIView {
         return label
     }()
 
-    private lazy var participantsIcon: UIImageView = {
-        let image = UIImageView()
+    private lazy var participantsImageView: UIImageView = {
+        let imageView = UIImageView()
 
-        image.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        image.image = UIImage(systemName: "person.fill")
-        image.tintColor = .black
+        imageView.image = UIImage(systemName: "person.fill")
+        imageView.tintColor = .black
 
-        return image
+        return imageView
     }()
 
     lazy var participantsNumberLabel: UILabel = {
@@ -105,15 +105,15 @@ final class ActivityView: UIView {
         return label
     }()
 
-    private lazy var priceIcon: UIImageView = {
-        let image = UIImageView()
+    private lazy var priceImageView: UIImageView = {
+        let imageView = UIImageView()
 
-        image.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        image.image = UIImage(named: "dolar")
-        image.tintColor = .black
+        imageView.image = UIImage(named: "dolar")
+        imageView.tintColor = .black
 
-        return image
+        return imageView
     }()
 
     lazy var priceRangeLabel: UILabel = {
@@ -141,15 +141,15 @@ final class ActivityView: UIView {
         return label
     }()
 
-    lazy var categorieIcon: UIImageView = {
-        let image = UIImageView()
+    lazy var categorieImageView: UIImageView = {
+        let imageView = UIImageView()
 
-        image.translatesAutoresizingMaskIntoConstraints = false
+        imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        image.image = UIImage(systemName: "list.dash")
-        image.tintColor = .black
+        imageView.image = UIImage(systemName: "list.dash")
+        imageView.tintColor = .black
 
-        return image
+        return imageView
     }()
 
     lazy var nextButton: UIButton = {
@@ -169,92 +169,160 @@ final class ActivityView: UIView {
 
         backgroundColor = .backgroundHome
 
-        setupViews()
-        setUpConstraints()
+        setUpViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupViews() {
+    private func setUpViews() {
         titleView.addSubview(titleLabel)
+        setUpConstraintsTitleLabel()
+        
         titleView.addSubview(backButton)
-
+        setUpConstraintsBackButton()
+        
         addSubview(titleView)
+        setUpConstraintsTitleView()
+        
         addSubview(activityLabel)
-
+        setUpConstraintsActivityLabel()
+        
         addSubview(participantsLabel)
+        setUpConstraintsParticipantsLabel()
+        
         addSubview(participantsNumberLabel)
-        addSubview(participantsIcon)
+        setUpConstraintsParticipantsNumberLabel()
+        
+        addSubview(participantsImageView)
+        setUpConstraintsParticipantsImageView()
 
         addSubview(priceLabel)
+        setUpConstraintsPriceLabel()
+        
         addSubview(priceRangeLabel)
-        addSubview(priceIcon)
+        setUpConstraintsPriceRangeLabel()
+        
+        addSubview(priceImageView)
+        setUpConstraintsPriceImageView()
 
         addSubview(categorieLabel)
-        addSubview(categorieIcon)
+        setUpConstraintsCategorieLabel()
+        
+        addSubview(categorieImageView)
+        setUpConstraintsCategorieImageView()
 
         addSubview(nextButton)
+        setUpConstraintsNextButton()
     }
-
-    private func setUpConstraints() {
+    
+    private func setUpConstraintsTitleLabel() {
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 80)
+        ])
+    }
+    
+    private func setUpConstraintsBackButton() {
+        NSLayoutConstraint.activate([
+            backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 32),
+            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+        ])
+    }
+    
+    private func setUpConstraintsTitleView() {
         NSLayoutConstraint.activate([
             titleView.topAnchor.constraint(equalTo: self.topAnchor),
             titleView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             titleView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            titleView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 80),
-
-            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor),
-
-            backButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
-            backButton.heightAnchor.constraint(equalToConstant: 32),
-            backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-
+            titleView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 80)
+        ])
+    }
+    
+    private func setUpConstraintsActivityLabel() {
+        NSLayoutConstraint.activate([
             activityLabel.topAnchor.constraint(lessThanOrEqualTo: titleView.bottomAnchor, constant: 65),
             activityLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-            activityLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-
-            participantsIcon.widthAnchor.constraint(equalToConstant: 32),
-            participantsIcon.heightAnchor.constraint(equalToConstant: 32),
-            participantsIcon.topAnchor.constraint(lessThanOrEqualTo: activityLabel.bottomAnchor, constant: 65),
-            participantsIcon.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 24),
-
-            participantsLabel.centerYAnchor.constraint(equalTo: participantsIcon.centerYAnchor),
+            activityLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -24)
+        ])
+    }
+    
+    private func setUpConstraintsParticipantsLabel() {
+        NSLayoutConstraint.activate([
+            participantsLabel.centerYAnchor.constraint(equalTo: participantsImageView.centerYAnchor),
             participantsLabel.widthAnchor.constraint(equalToConstant: 200),
-            participantsLabel.leadingAnchor.constraint(equalTo: participantsIcon.trailingAnchor, constant: 16),
-
-            participantsNumberLabel.centerYAnchor.constraint(equalTo: participantsIcon.centerYAnchor),
-            participantsNumberLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -24),
-
-            priceIcon.widthAnchor.constraint(equalToConstant: 32),
-            priceIcon.heightAnchor.constraint(equalToConstant: 32),
-            priceIcon.topAnchor.constraint(equalTo: participantsIcon.bottomAnchor, constant: 16),
-            priceIcon.leadingAnchor.constraint(equalTo: participantsIcon.leadingAnchor),
-
-            priceLabel.centerYAnchor.constraint(equalTo: priceIcon.centerYAnchor),
+            participantsLabel.leadingAnchor.constraint(equalTo: participantsImageView.trailingAnchor, constant: 16)
+        ])
+    }
+    
+    private func setUpConstraintsParticipantsNumberLabel() {
+        NSLayoutConstraint.activate([
+            participantsNumberLabel.centerYAnchor.constraint(equalTo: participantsImageView.centerYAnchor),
+            participantsNumberLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -24)
+        ])
+    }
+    
+    private func setUpConstraintsParticipantsImageView() {
+        NSLayoutConstraint.activate([
+            participantsImageView.widthAnchor.constraint(equalToConstant: 32),
+            participantsImageView.heightAnchor.constraint(equalToConstant: 32),
+            participantsImageView.topAnchor.constraint(lessThanOrEqualTo: activityLabel.bottomAnchor, constant: 65),
+            participantsImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 24)
+        ])
+    }
+    
+    private func setUpConstraintsPriceLabel() {
+        NSLayoutConstraint.activate([
+            priceLabel.centerYAnchor.constraint(equalTo: priceImageView.centerYAnchor),
             priceLabel.widthAnchor.constraint(equalTo: participantsLabel.widthAnchor),
-            priceLabel.leadingAnchor.constraint(equalTo: priceIcon.trailingAnchor, constant: 16),
-
-            priceRangeLabel.centerYAnchor.constraint(equalTo: priceIcon.centerYAnchor),
-            priceRangeLabel.trailingAnchor.constraint(equalTo: participantsNumberLabel.trailingAnchor),
-
-            categorieIcon.widthAnchor.constraint(equalToConstant: 32),
-            categorieIcon.heightAnchor.constraint(equalToConstant: 32),
-            categorieIcon.topAnchor.constraint(equalTo: priceIcon.bottomAnchor, constant: 16),
-            categorieIcon.leadingAnchor.constraint(equalTo: participantsIcon.leadingAnchor),
-
+            priceLabel.leadingAnchor.constraint(equalTo: priceImageView.trailingAnchor, constant: 16)
+        ])
+    }
+    
+    private func setUpConstraintsPriceRangeLabel() {
+        NSLayoutConstraint.activate([
+            priceRangeLabel.centerYAnchor.constraint(equalTo: priceImageView.centerYAnchor),
+            priceRangeLabel.trailingAnchor.constraint(equalTo: participantsNumberLabel.trailingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsPriceImageView() {
+        NSLayoutConstraint.activate([
+            priceImageView.widthAnchor.constraint(equalToConstant: 32),
+            priceImageView.heightAnchor.constraint(equalToConstant: 32),
+            priceImageView.topAnchor.constraint(equalTo: participantsImageView.bottomAnchor, constant: 16),
+            priceImageView.leadingAnchor.constraint(equalTo: participantsImageView.leadingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsCategorieLabel() {
+        NSLayoutConstraint.activate([
+            categorieLabel.centerYAnchor.constraint(equalTo: categorieImageView.centerYAnchor),
+            categorieLabel.widthAnchor.constraint(equalTo: participantsLabel.widthAnchor),
+            categorieLabel.leadingAnchor.constraint(equalTo: categorieImageView.trailingAnchor, constant: 16),
+            categorieLabel.bottomAnchor.constraint(lessThanOrEqualTo: nextButton.topAnchor, constant: -16)
+        ])
+    }
+    
+    private func setUpConstraintsCategorieImageView() {
+        NSLayoutConstraint.activate([
+            categorieImageView.widthAnchor.constraint(equalToConstant: 32),
+            categorieImageView.heightAnchor.constraint(equalToConstant: 32),
+            categorieImageView.topAnchor.constraint(equalTo: priceImageView.bottomAnchor, constant: 16),
+            categorieImageView.leadingAnchor.constraint(equalTo: participantsImageView.leadingAnchor)
+        ])
+    }
+    
+    private func setUpConstraintsNextButton() {
+        NSLayoutConstraint.activate([
             nextButton.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: -40),
             nextButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             nextButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            nextButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -40),
-
-            categorieLabel.centerYAnchor.constraint(equalTo: categorieIcon.centerYAnchor),
-            categorieLabel.widthAnchor.constraint(equalTo: participantsLabel.widthAnchor),
-            categorieLabel.leadingAnchor.constraint(equalTo: categorieIcon.trailingAnchor, constant: 16),
-            categorieLabel.bottomAnchor.constraint(lessThanOrEqualTo: nextButton.topAnchor, constant: -16)
+            nextButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -40)
         ])
     }
 }

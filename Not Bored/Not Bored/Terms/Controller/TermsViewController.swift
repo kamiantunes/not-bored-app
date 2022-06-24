@@ -31,7 +31,7 @@ final class TermsViewController: UIViewController {
         navigationItem.rightBarButtonItem?.tintColor = .label
     }
 
-    @objc private func didTapButton () {
+    @objc private func didTapButton() {
         navigationController?.popViewController(animated: true)
     }
 }
