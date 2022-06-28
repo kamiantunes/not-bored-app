@@ -125,11 +125,11 @@ final class HomeView: UIView {
         self.addSubview(priceTextField)
         setUpConstraintsPriceTextField()
         
-        self.addSubview(startButton)
-        setUpConstraintsStartButton()
-        
         self.addSubview(termsButton)
         setUpConstraintsTermsButton()
+        
+        self.addSubview(startButton)
+        setUpConstraintsStartButton()
     }
     
     private func setUpConstraintsNotBoredLabel() {
@@ -144,7 +144,6 @@ final class HomeView: UIView {
         NSLayoutConstraint.activate([
             participantsLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             participantsLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            participantsLabel.bottomAnchor.constraint(equalTo: participantsTextField.topAnchor, constant: -8)
         ])
     }
     
@@ -152,7 +151,8 @@ final class HomeView: UIView {
         NSLayoutConstraint.activate([
             participantsTextField.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor, constant: -50),
             participantsTextField.leadingAnchor.constraint(equalTo: participantsLabel.leadingAnchor),
-            participantsTextField.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor)
+            participantsTextField.trailingAnchor.constraint(equalTo: participantsLabel.trailingAnchor),
+            participantsLabel.bottomAnchor.constraint(equalTo: participantsTextField.topAnchor, constant: -8)
         ])
     }
     

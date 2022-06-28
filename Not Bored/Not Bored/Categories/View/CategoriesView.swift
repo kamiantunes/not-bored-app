@@ -72,11 +72,11 @@ final class CategoriesView: UIView {
         addSubview(tableView)
         setUpConstraintsTableView()
         
-        titleView.addSubview(shuffleButton)
-        setUpConstraintsShuffleButton()
-        
         titleView.addSubview(titleLabel)
         setUpConstraintsTitleLabel()
+        
+        titleView.addSubview(shuffleButton)
+        setUpConstraintsShuffleButton()
         
     }
     
@@ -98,20 +98,20 @@ final class CategoriesView: UIView {
         ])
     }
     
+    private func setUpConstraintsTitleLabel() {
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
+        ])
+    }
+    
     private func setUpConstraintsShuffleButton() {
         NSLayoutConstraint.activate([
             shuffleButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             shuffleButton.widthAnchor.constraint(equalToConstant: 26),
             shuffleButton.heightAnchor.constraint(equalToConstant: 26),
             shuffleButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16)
-        ])
-    }
-    
-    private func setUpConstraintsTitleLabel() {
-        NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: titleView.bottomAnchor)
         ])
     }
 }
